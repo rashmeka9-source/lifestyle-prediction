@@ -1,7 +1,5 @@
-# =====================================================
-# 🩺 HealthFit Pro - Lifestyle Analysis & Prediction (Streamlit)
-# =====================================================
 
+# 🩺 HealthFit Pro - Lifestyle Analysis & Prediction (Streamlit)
 import streamlit as st
 import pandas as pd
 import numpy as np
