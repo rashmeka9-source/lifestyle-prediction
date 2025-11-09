@@ -1,11 +1,11 @@
+# =====================================================
+# 🩺 HealthFit Pro - Streamlit Version
+# =====================================================
 
-# 🩺 HealthFit Pro - Lifestyle Analysis & Prediction (Streamlit)
 import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import io
-import base64
 
 # ---------------------------
 # Sample Dataset Generator
@@ -83,52 +83,47 @@ def generate_suggestions(calories_burned, bmi, workout_type, diet_type, workout_
 def create_calories_chart():
     df = create_sample_data()
     avg_calories = df.groupby('workout_type')['calories_burned'].mean()
-
-    fig, ax = plt.subplots(figsize=(8, 5))
-    bars = ax.bar(avg_calories.index, avg_calories.values, color=['#2E8B57', '#3CB371', '#66CDAA', '#98FB98', '#90EE90'])
-    ax.set_title('Average Calories Burned by Workout Type', fontsize=14, fontweight='bold')
-    ax.set_xlabel('Workout Type')
-    ax.set_ylabel('Average Calories Burned')
+    fig, ax = plt.subplots(figsize=(8,5))
+    bars = ax.bar(avg_calories.index, avg_calories.values, color=['#2E8B57','#3CB371','#66CDAA','#98FB98','#90EE90'])
+    ax.set_title("Average Calories Burned by Workout Type", fontsize=14, fontweight='bold')
+    ax.set_xlabel("Workout Type")
+    ax.set_ylabel("Average Calories Burned")
     ax.grid(axis='y', alpha=0.3)
     for bar in bars:
-        ax.text(bar.get_x() + bar.get_width() / 2., bar.get_height(),
-                f'{bar.get_height():.0f}', ha='center', va='bottom')
+        ax.text(bar.get_x() + bar.get_width()/2., bar.get_height(), f'{bar.get_height():.0f}', ha='center', va='bottom')
     st.pyplot(fig)
 
 def create_bmi_trends_chart():
     df = create_sample_data()
     bmi_trends = df.groupby('age_group')['bmi'].mean()
-
-    fig, ax = plt.subplots(figsize=(8, 5))
+    fig, ax = plt.subplots(figsize=(8,5))
     ax.plot(bmi_trends.index, bmi_trends.values, marker='o', color='#2E8B57', linewidth=3)
-    ax.set_title('BMI Trends Across Age Groups', fontsize=14, fontweight='bold')
-    ax.set_xlabel('Age Group')
-    ax.set_ylabel('Average BMI')
+    ax.set_title("BMI Trends Across Age Groups", fontsize=14, fontweight='bold')
+    ax.set_xlabel("Age Group")
+    ax.set_ylabel("Average BMI")
     ax.grid(True, alpha=0.3)
     for x, y in zip(bmi_trends.index, bmi_trends.values):
-        ax.text(x, y + 0.3, f'{y:.1f}', ha='center', va='bottom', fontweight='bold')
+        ax.text(x, y+0.3, f'{y:.1f}', ha='center', va='bottom', fontweight='bold')
     st.pyplot(fig)
 
 def create_diet_distribution_chart():
     df = create_sample_data()
     diet_distribution = df['diet_type'].value_counts()
-
-    fig, ax = plt.subplots(figsize=(6, 6))
-    wedges, texts, autotexts = ax.pie(diet_distribution.values, labels=diet_distribution.index,
-                                      autopct='%1.1f%%',
-                                      colors=['#2E8B57', '#3CB371', '#66CDAA', '#98FB98', '#90EE90'],
-                                      startangle=90)
+    fig, ax = plt.subplots(figsize=(6,6))
+    wedges, texts, autotexts = ax.pie(
+        diet_distribution.values, labels=diet_distribution.index, autopct='%1.1f%%',
+        colors=['#2E8B57','#3CB371','#66CDAA','#98FB98','#90EE90'], startangle=90
+    )
     for autotext in autotexts:
         autotext.set_color('white')
         autotext.set_fontweight('bold')
-    ax.set_title('User Distribution by Diet Type', fontsize=14, fontweight='bold')
+    ax.set_title("User Distribution by Diet Type", fontsize=14, fontweight='bold')
     st.pyplot(fig)
 
 # ---------------------------
 # Streamlit App
 # ---------------------------
 st.set_page_config(page_title="HealthFit Pro", layout="wide")
-
 st.sidebar.title("🏋️‍♂️ HealthFit Pro")
 st.sidebar.markdown("### Lifestyle Analysis & Prediction")
 
@@ -140,19 +135,18 @@ page = st.sidebar.radio("Navigate", ["🏠 Dashboard", "📊 Health Prediction",
 if page == "🏠 Dashboard":
     st.title("📈 Health & Fitness Dashboard")
     st.markdown("Comprehensive analysis of health metrics and lifestyle patterns.")
-    
-    col1, col2 = st.columns([2, 1])
+
+    col1, col2 = st.columns([2,1])
     with col1:
         create_calories_chart()
     with col2:
         create_diet_distribution_chart()
-    
+
     create_bmi_trends_chart()
 
     st.markdown("### Key Statistics")
     cols = st.columns(4)
-    metrics = [("Active Users", "1,247"), ("Avg Calories/Day", "2,350"),
-               ("Avg BMI", "24.8"), ("Healthy Profiles", "78%")]
+    metrics = [("Active Users","1,247"),("Avg Calories/Day","2,350"),("Avg BMI","24.8"),("Healthy Profiles","78%")]
     for col, (title, value) in zip(cols, metrics):
         col.metric(title, value)
 
@@ -161,7 +155,7 @@ if page == "🏠 Dashboard":
 # ---------------------------
 elif page == "📊 Health Prediction":
     st.title("🧮 Health Prediction Analysis")
-    st.markdown("Enter your data to get personalized fitness insights and recommendations.")
+    st.markdown("Enter your lifestyle data to get personalized health insights.")
 
     with st.form("prediction_form"):
         col1, col2 = st.columns(2)
@@ -169,12 +163,11 @@ elif page == "📊 Health Prediction":
             age = st.number_input("Age", 10, 100, 25)
             weight = st.number_input("Weight (kg)", 30.0, 200.0, 70.0)
             height = st.number_input("Height (cm)", 100.0, 220.0, 170.0)
-            gender = st.selectbox("Gender", ["Male", "Female", "Other"])
+            gender = st.selectbox("Gender", ["Male","Female","Other"])
         with col2:
-            workout_type = st.selectbox("Workout Type", ["Cardio", "Strength", "Yoga", "HIIT", "Swimming"])
+            workout_type = st.selectbox("Workout Type", ["Cardio","Strength","Yoga","HIIT","Swimming"])
             workout_timing = st.slider("Workout Duration (minutes)", 10, 120, 45)
-            diet_type = st.selectbox("Diet Type", ["Vegetarian", "Vegan", "Keto", "Mediterranean", "Balanced"])
-
+            diet_type = st.selectbox("Diet Type", ["Vegetarian","Vegan","Keto","Mediterranean","Balanced"])
         submit = st.form_submit_button("🔍 Analyze My Health")
 
     if submit:
@@ -199,12 +192,12 @@ elif page == "📊 Health Prediction":
 elif page == "ℹ️ About":
     st.title("About HealthFit Pro")
     st.markdown("""
-    **HealthFit Pro** is an intelligent health analytics tool that visualizes workout & diet data,
-    predicts calories burned and BMI, and provides actionable health insights.
+**HealthFit Pro** is an intelligent health analytics tool that visualizes workout & diet data,
+predicts calories burned and BMI, and provides actionable health insights.
 
-    **Features:**
-    - 🧠 AI-based calorie and BMI predictions  
-    - 📊 Dynamic charts for fitness trends  
-    - 💬 Personalized lifestyle suggestions  
-    - 🥗 Multi-diet & workout pattern analytics
-    """)
+**Features:**
+- 🧠 AI-based calorie and BMI predictions  
+- 📊 Dynamic charts for fitness trends  
+- 💬 Personalized lifestyle suggestions  
+- 🥗 Multi-diet & workout pattern analytics
+""")
